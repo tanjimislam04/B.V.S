@@ -1,27 +1,33 @@
+// Function & structure building by Tanjim
+// Error handling by ovi
+// Function calling by apu
+// Model- Waterfall
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_C 10       // Maximum number of candidates
-#define MAX_VOTERS 100 // Maximum number of voters
+#define MAX_C 10       
+#define MAX_VOTERS 100 
 
-// Candidate structure holding name and vote count
+
 typedef struct
 {
     char name[50];
     int votes;
 } Candidate;
 
-// Voter structure with personal details and vote status
+
 typedef struct
 {
     char name[50];
     char password[50];
     int age;
-    int voted; // 0 if not voted, 1 if voted
+    int voted; 
 } Voter;
 
-// Global arrays and counters
+
 Candidate candidates[MAX_C];
 int candidateCount = 0;
 
@@ -34,7 +40,6 @@ void registerVoters(void);
 void voterMenu(void);
 void showResults(void);
 
-// Function to set up the election by entering candidate names
 void setupElection(void)
 {
     printf("\n--- Election Setup ---\n");
@@ -48,7 +53,7 @@ void setupElection(void)
         return;
     }
 
-    // Input each candidate's name and initialize their vote count
+   
     for (int i = 0; i < candidateCount; i++)
     {
         printf("Enter name for candidate %d: ", i + 1);
@@ -59,7 +64,7 @@ void setupElection(void)
     printf("Election setup complete.\n");
 }
 
-// Function to register voters
+
 void registerVoters(void)
 {
     int num;
@@ -75,7 +80,7 @@ void registerVoters(void)
             break;
         }
 
-        // Input voter details
+        
         printf("Enter name for voter %d: ", voterCount + 1);
         scanf("%s", voters[voterCount].name);
 
@@ -85,21 +90,20 @@ void registerVoters(void)
         printf("Enter age for voter %d: ", voterCount + 1);
         scanf("%d", &voters[voterCount].age);
 
-        // Check age eligibility
+        
         if (voters[voterCount].age < 18)
         {
             printf("Voter must be at least 18 years old. %s not registered.\n", voters[voterCount].name);
         }
         else
         {
-            voters[voterCount].voted = 0; // Set as not voted
+            voters[voterCount].voted = 0; 
             printf("Voter %s registered successfully.\n", voters[voterCount].name);
             voterCount++;
         }
     }
 }
 
-// Function to handle voter login and voting
 void voterMenu(void)
 {
     char name[50], pass[50];
@@ -111,7 +115,7 @@ void voterMenu(void)
     printf("Enter voter password: ");
     scanf("%s", pass);
 
-    // Authenticate voter
+    
     for (int i = 0; i < voterCount; i++)
     {
         if (strcmp(name, voters[i].name) == 0 && strcmp(pass, voters[i].password) == 0)
@@ -127,21 +131,20 @@ void voterMenu(void)
         return;
     }
 
-    // Check if already voted
+    
     if (voters[foundIndex].voted == 1)
     {
         printf("You have already voted.\n");
         return;
     }
 
-    // Check if candidates exist
+    
     if (candidateCount == 0)
     {
         printf("Election is not set up yet.\n");
         return;
     }
 
-    // Display candidates
     printf("\n--- Voting ---\n");
     for (int j = 0; j < candidateCount; j++)
     {
@@ -152,20 +155,20 @@ void voterMenu(void)
     printf("Enter your vote (candidate number): ");
     scanf("%d", &choice);
 
-    // Validate vote
+    
     if (choice < 1 || choice > candidateCount)
     {
         printf("Invalid candidate choice.\n");
         return;
     }
 
-    // Record vote
+    
     candidates[choice - 1].votes++;
     voters[foundIndex].voted = 1;
     printf("Your vote for %s has been recorded.\n", candidates[choice - 1].name);
 }
 
-// Function to display election results
+
 void showResults(void)
 {
     printf("\n=== Election Results ===\n");
@@ -176,14 +179,13 @@ void showResults(void)
     }
     else
     {
-        // Display each candidate's vote count
+   
         for (int i = 0; i < candidateCount; i++)
         {
             printf("Candidate %s received %d votes.\n", candidates[i].name, candidates[i].votes);
         }
     }
-
-    // Count how many voters voted and didn’t vote
+    
     int votedCount = 0, notVotedCount = 0;
     for (int i = 0; i < voterCount; i++)
     {
@@ -197,7 +199,7 @@ void showResults(void)
     printf("Voters who have voted: %d\n", votedCount);
     printf("Voters who have not voted: %d\n", notVotedCount);
 
-    // Determine the winner
+    
     if (candidateCount > 0)
     {
         int maxVotes = -1, winnerIndex = -1, tie = 0;
@@ -216,7 +218,6 @@ void showResults(void)
             }
         }
 
-        // Announce result
         if (maxVotes <= 0)
         {
             printf("No votes were cast.\n");
@@ -232,7 +233,7 @@ void showResults(void)
     }
 }
 
-// Main function with menu loop
+
 int main(void)
 {
     int choice;
@@ -248,7 +249,7 @@ int main(void)
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
-        // Menu options
+        
         switch (choice)
         {
         case 1:
